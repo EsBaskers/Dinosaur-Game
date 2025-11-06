@@ -1,9 +1,18 @@
 body {
     font-family:'Courier New', Courier, monospace;
     text-align: center;
+    background-color: whitesmoke;
+    color: black;
 }
 
 #board {
     background-color: lightgray;
     border-bottom: 3px solid black;
+}
+.dark-mode {
+background-color: black;
+color: white;
+}
+.dark-mode#board {
+    background-color: darkgray;
 }
