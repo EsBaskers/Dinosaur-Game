@@ -109,23 +109,34 @@ for (let i = 0; i < cactusArray.length; i++) {
         resetImg.src = "./img/reset.png";
         resetImg.onload = function() {
             context.drawImage(resetImg, 700, 200);
+            //window.location.reload
         }
     }
 }
-
 
 context.fillStyle="black";
 context.font="20px courier";
 score++;
 context.fillText(score, 5, 20);
-let highscore;
-if (score>=highscore){
-    highscore=score;
-    context.fillStyle="black";
-    context.font="20px courier";
-    context.fillText(highscore, 10,  30); 
+
+const highscore = document.getElementById("highscore");
+document.addEventListener("DOMContentLoaded", () => {
+let currenthighscore = localStorage.getItem("myhighscore");
+if(currenthighscore === null){
+    currenthighscore = 0;
 }
+else{
+    if (score>=currenthighscore) {
+        currenthighscore=score;
+    } else {
+        currenthighscore=currenthighscore;
+    }
 }
+localStorage.setItem("myhighscore", currenthighscore);
+context.fillText(highscore, 1400, 20)
+});
+}
+
 
 
 
