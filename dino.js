@@ -1,3 +1,9 @@
+//Start
+function popup(){
+    alert("                                    The rules are simple! \n                                              DON'T \n                                                HIT \n                                                  A \n                                             CACTUS")
+}
+
+
 //Light/Dark
 
 function lightdark() {
@@ -42,6 +48,17 @@ let cactusY = boardHeight - cactusHeight;
 let cactus1Img;
 let cactus2Img;
 let cactus3Img;
+
+//birds
+
+let BirdArray = [];
+
+let Bird1Width = 74;
+let Bird2Width = 85;
+
+let BirdHeight = 30;
+let BirdX = 1300;
+let BirdY = boardHeight - BirdHeight;
 
 //physics
 
@@ -191,7 +208,6 @@ function placeCactus() {
         cactusArray.shift();
     }
 }
-
 function detectCollision(a, b) {
     return a.x < b.x + b.width &&
            a.x + a.width > b.x &&
