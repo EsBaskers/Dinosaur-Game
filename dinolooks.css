@@ -11,8 +11,9 @@ body {
 }
 .topnav {
     overflow: hidden;
-    background-color:white;box-shadow: 10px 10px grey;
-    font-size: 17px;border: 2px solid black;
+    box-shadow: 10px 10px grey;
+    font-size: 17px;
+    border: 2px solid black;
   }
   
   .topnav a {
@@ -21,7 +22,8 @@ body {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 17px;border: 1px solid black;
+    font-size: 17px;
+    border: 1px solid black;
   }
   
   .topnav a:hover {
@@ -35,7 +37,7 @@ body {
   }
 .dark-mode {
 background-color: black;
-color: white;
+filter: invert(1);
 }
 
   
