@@ -1,5 +1,5 @@
 //Start
-function popup(){
+function popup() {
     alert("                                    The rules are simple! \n                                              DON'T \n                                                HIT \n                                                  A \n                                             CACTUS")
 }
 
@@ -9,7 +9,7 @@ function popup(){
 function lightdark() {
     var element = document.body;
     element.classList.toggle("dark-mode");
-    
+
 }
 
 //board stuff
@@ -28,10 +28,10 @@ let dinoY = boardHeight - dinoHeight;
 let dinoImg;
 
 let dino = {
-    x : dinoX,
-    y : dinoY,
-    width : dinoWidth,
-    height : dinoHeight
+    x: dinoX,
+    y: dinoY,
+    width: dinoWidth,
+    height: dinoHeight
 }
 
 //cactus
@@ -43,7 +43,7 @@ let cactus2Width = 69;
 let cactus3Width = 102;
 
 let cactusHeight = 70;
-let cactusX = 1300;
+let cactusX = 1500;
 let cactusY = boardHeight - cactusHeight;
 
 let cactus1Img;
@@ -63,23 +63,23 @@ let BirdY = boardHeight - BirdHeight;
 
 //physics
 
-let velocityX = -8; 
+let velocityX = -8;
 let velocityY = 0;
 let gravity = .4;
 
 let gameOver = false;
 let score = 0;
 
-window.onload = function() {
+window.onload = function () {
     board = document.getElementById("board");
     board.height = boardHeight;
     board.width = boardWidth;
 
-    context = board.getContext("2d"); 
+    context = board.getContext("2d");
 
     dinoImg = new Image();
     dinoImg.src = "./img/dino.png";
-    dinoImg.onload = function() {
+    dinoImg.onload = function () {
         context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
     }
     cactus1Img = new Image();
@@ -105,58 +105,38 @@ function update() {
     context.clearRect(0, 0, board.width, board.height);
 
 
-velocityY += gravity;
-dino.y = Math.min(dino.y + velocityY, dinoY); 
-context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
+    velocityY += gravity;
+    dino.y = Math.min(dino.y + velocityY, dinoY);
+    context.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
 
 
-for (let i = 0; i < cactusArray.length; i++) {
-    let cactus = cactusArray[i];
-    cactus.x += velocityX;
-    context.drawImage(cactus.img, cactus.x, cactus.y, cactus.width, cactus.height);
+    for (let i = 0; i < cactusArray.length; i++) {
+        let cactus = cactusArray[i];
+        cactus.x += velocityX;
+        context.drawImage(cactus.img, cactus.x, cactus.y, cactus.width, cactus.height);
 
-    if (detectCollision(dino, cactus)) {
-        gameOver = true;
-        dinoImg.src = "./img/dino-dead.png";
-        gameOverImg = new Image();
-        gameOverImg.src = "./img/game-over.png";
-        gameOverImg.onload = function() {
-            context.drawImage(gameOverImg, 550, 150);
-        }
-        resetImg = new Image();
-        resetImg.src = "./img/reset.png";
-        resetImg.onload = function() {
-            context.drawImage(resetImg, 700, 200);
-            //window.location.reload
+        if (detectCollision(dino, cactus)) {
+            gameOver = true;
+            dinoImg.src = "./img/dino-dead.png";
+            gameOverImg = new Image();
+            gameOverImg.src = "./img/game-over.png";
+            gameOverImg.onload = function () {
+                context.drawImage(gameOverImg, 550, 150);
+            }
+            resetImg = new Image();
+            resetImg.src = "./img/reset.png";
+            resetImg.onload = function () {
+                context.drawImage(resetImg, 700, 200);
+            }
+            //onclick=window.location.reload();
         }
     }
+
+    context.fillStyle = "black";
+    context.font = "20px courier";
+    score++;
+    context.fillText(score, 5, 20);
 }
-
-context.fillStyle="black";
-context.font="20px courier";
-score++;
-context.fillText(score, 5, 20);
-
-const highscore = document.getElementById("highscore");
-document.addEventListener("DOMContentLoaded", () => {
-let currenthighscore = localStorage.getItem("myhighscore");
-if(currenthighscore === null){
-    currenthighscore = 0;
-}
-else{
-    if (score>=currenthighscore) {
-        currenthighscore=score;
-    } else {
-        currenthighscore=currenthighscore;
-    }
-}
-localStorage.setItem("myhighscore", currenthighscore);
-context.fillText(highscore, 1400, 20)
-});
-}
-
-
-
 
 function moveDino(e) {
     if (gameOver) {
@@ -164,11 +144,16 @@ function moveDino(e) {
     }
 
     if ((e.code == "Space" || e.code == "ArrowUp") && dino.y == dinoY) {
-       
+
         velocityY = -10;
     }
     else if (e.code == "ArrowDown" && dino.y == dinoY) {
-      
+
+        velocityY = 10;
+        dinoImg = dino-duck1.png;
+    }
+    else{
+
     }
 
 }
@@ -180,10 +165,10 @@ function placeCactus() {
 
 
     let cactus = {
-        img : null,
-        x : cactusX,
-        y : cactusY,
-        width : null,
+        img: null,
+        x: cactusX,
+        y: cactusY,
+        width: null,
         height: cactusHeight
     }
 
@@ -211,7 +196,8 @@ function placeCactus() {
 }
 function detectCollision(a, b) {
     return a.x < b.x + b.width &&
-           a.x + a.width > b.x &&
-           a.y < b.y + b.height &&
-           a.y + a.height > b.y;
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y;
 }
+document.cookie = "Tries=score";
