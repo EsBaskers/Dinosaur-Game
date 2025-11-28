@@ -59,9 +59,7 @@ let Bird2Width = 85;
 
 let BirdHeight = 30;
 let BirdX = 1500;
-let BirdY = [];
-for(let i = 0; i < 999; i++) {
-  BirdY.push(Math.floor(Math.random() * 450) + 350);}
+let BirdY = 410;
 
 let Bird1Img;
 let Bird2Img;
@@ -70,12 +68,12 @@ let Bird2Img;
 
 let velocityX = -8;
 let velocityY = 0;
-let gravity = .00004;
+let gravity = .4;
 
 let gameOver = false;
 let score = 0;
 
-window.onload = function () {
+window.onload = function game() {
     board = document.getElementById("board");
     board.height = boardHeight;
     board.width = boardWidth;
@@ -252,7 +250,25 @@ function detectCollision(a, b) {
         a.x + a.width > b.x &&
         a.y < b.y + b.height &&
         a.y + a.height > b.y;
-        
+
 }
-localStorage.setItem=('Score', score);
-document.getElementById("Score").innerHTML = localStorage.getItem=('Score', score);
+
+var save = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var json = JSON.stringify(data),
+            blob = new Blob([json], {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
+var data = { data: "this is a file" };
+var fileName = "tries.json";
+
+save(data, fileName);
