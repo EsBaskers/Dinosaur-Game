@@ -66,9 +66,9 @@ let Bird2Img;
 
 //physics
 
-let velocityX = -8;
+let velocityX = -10;
 let velocityY = 0;
-let gravity = .4;
+let gravity = 0.4;
 
 let gameOver = false;
 let score = 0;
@@ -101,7 +101,7 @@ window.onload = function game() {
     Bird2Img.src = "./img/bird2.png";
 
     requestAnimationFrame(update);
-    setInterval(placeCactus, 1000);
+    setInterval(placeCactus,1000);
     document.addEventListener("keydown", moveDino);
 }
 
@@ -253,22 +253,3 @@ function detectCollision(a, b) {
 
 }
 
-var save = (function () {
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-    return function (data, fileName) {
-        var json = JSON.stringify(data),
-            blob = new Blob([json], {type: "octet/stream"}),
-            url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        window.URL.revokeObjectURL(url);
-    };
-}());
-
-var data = { data: "this is a file" };
-var fileName = "tries.json";
-
-save(data, fileName);
