@@ -8,16 +8,12 @@ body {
 #board {
     background-color: lightgray;
     border-bottom: 3px solid black;
-    width: 99.5vw;
-    height: 75vh;
 }
 .topnav {
     overflow: hidden;
     box-shadow: 10px 10px grey;
     font-size: 17px;
     border: 2px solid black;
-    width: 99vw;
-    
   }
   
   .topnav a {
@@ -44,5 +40,63 @@ background-color: black;
 filter: invert(1);
 }
 
+  /* SETTINGS MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+}
 
-  
+.modal-content {
+    background: white;
+    color: black;
+    width: 300px;
+    margin: 150px auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+.modal-content input {
+    width: 80%;
+    margin-bottom: 10px;
+}
+/* HUD */
+#hud {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    font-size: 26px;
+    font-family: Courier;
+    color: black;
+    text-align: left;
+    z-index: 50;
+}
+#hud span {
+    display: block;
+}
+
+/* GAME OVER OVERLAY */
+#gameOverOverlay {
+    position: absolute;
+    top: 120px;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+}
+
+#gameOverOverlay img {
+    display: block;
+    margin: 15px auto;
+    cursor: pointer;
+}
+
+/* fix inversion in dark mode */
+.dark-mode #hud {
+    filter: invert(1);
+}
