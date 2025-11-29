@@ -18,12 +18,23 @@ function popup() {
 // LIGHT/DARK MODE
 function lightdark() {
     document.body.classList.toggle("dark-mode");
+    // Save dark mode state
+    if (document.body.classList.contains("dark-mode")) {
+        localStorage.setItem('darkMode', 'on');
+    } else {
+        localStorage.setItem('darkMode', 'off');
+    }
 }
 
 // Remove or disable modal-related functions
 function showTries() {
     pauseGame();
-    document.getElementById('triesValue').textContent = localStorage.getItem('tries') || 0;
+    var tries = localStorage.getItem('tries') || 0;
+    var lastTries = JSON.parse(localStorage.getItem('lastTries') || '[]');
+    document.getElementById('triesValue').innerHTML =
+        'Total tries: ' + tries +
+        '<br>Last 10 tries:<br>' +
+        (lastTries.length ? lastTries.map((t, i) => (lastTries.length - i) + '. ' + t).reverse().join('<br>') : 'No tries yet.');
     document.getElementById('triesModal').style.display = 'block';
 }
 function closeTries() {
@@ -71,6 +82,16 @@ function showRules() {
 function closeRules() {
     document.getElementById('rulesModal').style.display = 'none';
     resumeGame();
+}
+function resetSettingsToDefault() {
+    gravity = 0.4;
+    jumpStrength = -10;
+    spawnRate = 1000;
+    velocityX = -10;
+    document.getElementById('gravityInput').value = gravity;
+    document.getElementById('jumpInput').value = jumpStrength;
+    document.getElementById('spawnInput').value = spawnRate;
+    document.getElementById('speedInput').value = Math.abs(velocityX);
 }
 
 // ----------------------------
@@ -145,6 +166,11 @@ window.onload = function game() {
     cactus3Img = new Image(); cactus3Img.src = "./img/cactus3.png";
     Bird1Img = new Image(); Bird1Img.src = "./img/bird1.png";
     Bird2Img = new Image(); Bird2Img.src = "./img/bird2.png";
+
+    // Restore dark mode if it was enabled
+    if (localStorage.getItem('darkMode') === 'on') {
+        document.body.classList.add('dark-mode');
+    }
 
     requestAnimationFrame(update);
     spawnInterval = setInterval(placeCactus, spawnRate);
@@ -266,25 +292,27 @@ function unduckDino(e) {
 // ---------------------------
 function placeCactus() {
     if (gameOver) return;
-    // Always attempt to spawn a cactus
-    let cactusR = Math.random();
-    let spawnCactus = false;
-    if (cactusR > 0.90) {
-        cactusArray.push({ img: cactus3Img, x: cactusX, y: cactusY, width: cactus3Width, height: cactusHeight });
-        spawnCactus = true;
-    } else if (cactusR > 0.60) {
-        cactusArray.push({ img: cactus2Img, x: cactusX, y: cactusY, width: cactus2Width, height: cactusHeight });
-        spawnCactus = true;
-    } else if (cactusR > 0.30) {
-        cactusArray.push({ img: cactus1Img, x: cactusX, y: cactusY, width: cactus1Width, height: cactusHeight });
-        spawnCactus = true;
-    }
-    // Only spawn a bird if not too close to the last cactus
-    let canSpawnBird = true;
+    // Only spawn a cactus if the last cactus is far enough away
+    let minCactusGap = 120;
+    let canSpawnCactus = true;
     if (cactusArray.length > 0) {
         let lastCactus = cactusArray[cactusArray.length - 1];
-        if (lastCactus && Math.abs(BirdX - lastCactus.x) < 120) {
+        if (lastCactus && Math.abs(cactusX - lastCactus.x) < minCactusGap) {
+            canSpawnCactus = false;
+        }
+    }
+    let cactusR = Math.random();
+    if (canSpawnCactus) {
+        if (cactusR > 0.90) cactusArray.push({ img: cactus3Img, x: cactusX, y: cactusY, width: cactus3Width, height: cactusHeight });
+        else if (cactusR > 0.60) cactusArray.push({ img: cactus2Img, x: cactusX, y: cactusY, width: cactus2Width, height: cactusHeight });
+        else if (cactusR > 0.30) cactusArray.push({ img: cactus1Img, x: cactusX, y: cactusY, width: cactus1Width, height: cactusHeight });
+    }
+    // Only spawn a bird if no cactus is within 120px of BirdX
+    let canSpawnBird = true;
+    for (let c of cactusArray) {
+        if (Math.abs(BirdX - c.x) < 120) {
             canSpawnBird = false;
+            break;
         }
     }
     let birdR = Math.random();
@@ -320,13 +348,18 @@ function endGame() {
     tries++;
     localStorage.setItem("tries", tries);
 
+    // Store last 10 tries
+    let lastTries = JSON.parse(localStorage.getItem('lastTries') || '[]');
+    lastTries.push(score);
+    if (lastTries.length > 10) lastTries = lastTries.slice(-10);
+    localStorage.setItem('lastTries', JSON.stringify(lastTries));
+
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("highScore", highScore);
     }
 
-    // Only show the game over overlay with images, no modal or text
-    showGameOverOverlay();
+    setTimeout(showGameOverOverlay, 500);
 }
 
 function restartGame() {
