@@ -10,28 +10,43 @@
 
 <div class="topnav">
   <a onclick="window.location.reload()">Start</a>
-  <a onclick="showTries()">Tries</a>
-  <a onclick="showHighscore()">Highscore</a>
-  <a onclick="popup()">Rules</a>
+  <a>Tries</a>
+  <a>Highscore</a>
+  <a>Rules</a>
   <a onclick="lightdark()">Light/Dark</a>
-  <a onclick="openSettings()">Settings</a>
+  <a>Settings</a>
 </div>
 
 <body>
     <h1>Dino-Game</h1>
     <canvas id="board"></canvas>
-    <div id="hud">
-    <span id="hudScore">Score: 0</span>
-    <span id="hudHighscore">Highscore: 0</span>
-    <span id="hudTries">Tries: 0</span>
-</div>
+    
+    <!-- Game Over Overlay -->
+    <div id="gameOverOverlay">
+        <img id="gameOverImage" src="./img/game-over.png">
+        <img id="restartButton" src="./img/reset.png">
+    </div>
 
-<!-- Game Over Overlay -->
-<div id="gameOverOverlay">
-    <img id="gameOverImage" src="./img/game-over.png">
-    <img id="restartButton" src="./img/reset.png">
-</div>
+    <!-- Info Box for Navbar Actions -->
+    <div id="infoBox"></div>
 
+    <!-- Tries Modal -->
+    <div id="triesModal" class="modal">
+        <div class="modal-content">
+            <h2>Total Tries</h2>
+            <p id="triesValue"></p>
+            <button onclick="closeTries()">Close</button>
+        </div>
+    </div>
+
+    <!-- Highscore Modal -->
+    <div id="highscoreModal" class="modal">
+        <div class="modal-content">
+            <h2>Highscore</h2>
+            <p id="highscoreValue"></p>
+            <button onclick="closeHighscore()">Close</button>
+        </div>
+    </div>
 
     <!-- Settings Modal -->
     <div id="settingsModal" class="modal">
@@ -47,8 +62,29 @@
             <label>Spawn Rate (ms):</label>
             <input type="number" id="spawnInput" step="100"><br>
 
+            <label>Obstacle Speed:</label>
+            <input type="number" id="speedInput" step="1"><br>
+
             <button onclick="saveSettings()">Save</button>
             <button onclick="closeSettings()">Close</button>
+        </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <h2>Rules</h2>
+            <p>Press Space or Up Arrow to jump.<br>Down Arrow to duck.<br>Avoid obstacles!</p>
+            <button onclick="closeRules()">Close</button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <h2>GAME OVER!</h2>
+            <p id="gameOverText"></p>
+            <button onclick="restartGame()">Restart</button>
         </div>
     </div>
 

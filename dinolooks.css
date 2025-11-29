@@ -35,6 +35,15 @@ body {
     background-color: #04AA6D;
     color: white;
   }
+  
+  .topnav a.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    color: #888;
+    background: #eee;
+    cursor: not-allowed;
+}
+
 .dark-mode {
 background-color: black;
 filter: invert(1);
@@ -83,20 +92,51 @@ filter: invert(1);
 /* GAME OVER OVERLAY */
 #gameOverOverlay {
     position: absolute;
-    top: 120px;
-    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
     text-align: center;
     z-index: 1000;
     display: none;
+    pointer-events: none;
 }
 
 #gameOverOverlay img {
     display: block;
     margin: 15px auto;
     cursor: pointer;
+    pointer-events: auto;
 }
 
 /* fix inversion in dark mode */
 .dark-mode #hud {
     filter: invert(1);
+}
+
+/* INFO BOX */
+#infoBox {
+    display: none;
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    min-width: 220px;
+    background: #fff;
+    color: #222;
+    border: 2px solid #222;
+    border-radius: 8px;
+    padding: 18px 24px;
+    font-size: 18px;
+    z-index: 2000;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    text-align: left;
+    cursor: pointer;
+}
+#infoBox.show {
+    display: block;
+    animation: fadeIn 0.2s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
